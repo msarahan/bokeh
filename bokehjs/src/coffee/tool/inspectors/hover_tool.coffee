@@ -157,14 +157,6 @@ class HoverToolView extends InspectTool.View
     r = @mget('renderers')[0]
     indices = @plot_view.renderers[r.id].hit_test(geometry)
 
-
-    if (
-      (indices['0d']['indices'].length is 0) and
-      (indices['1d']['indices'].length is 0) and
-      (indices['2d']['indices'].length is 0)
-    )
-      return
-
     canvas = @plot_model.get('canvas')
     frame = @plot_model.get('frame')
 
