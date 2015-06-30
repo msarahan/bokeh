@@ -135,7 +135,7 @@ class HoverToolView extends InspectTool.View
           [rx, ry] = [vx, vy]
 
       vars = {index: i, x: x, y: y, vx: vx, vy: vy, sx: sx, sy: sy, data_x: data_x, data_y: data_y, rx:rx, ry:ry}
-      tooltip.add(rx, ry, @_render_tooltips(ds, i, vars))
+      #tooltip.add(rx, ry, @_render_tooltips(ds, i, vars))
 
     for i in indices['1d'].indices
       # patches will not have .x, .y attributes, for instance
@@ -149,7 +149,7 @@ class HoverToolView extends InspectTool.View
 
       vars = {index: i, x: x, y: y, vx: vx, vy: vy, sx: sx, sy: sy, data_x: data_x, data_y: data_y}
 
-      tooltip.add(rx, ry, @_render_tooltips(ds, i, vars))
+      #tooltip.add(rx, ry, @_render_tooltips(ds, i, vars))
 
     return null
 
@@ -227,11 +227,11 @@ class HoverTool extends InspectTool.Model
     super(attrs, options)
     ttmodels = {}
     renderers = @get('plot').get('renderers')
-    for r in @get('renderers')
-      tooltip = new Tooltip.Model()
-      tooltip.set("custom", _.isString(@get("tooltips")))
-      ttmodels[r.id] = tooltip
-      renderers.push(tooltip)
+    #for r in @get('renderers')
+    #  tooltip = new Tooltip.Model()
+    #  tooltip.set("custom", _.isString(@get("tooltips")))
+    #  ttmodels[r.id] = tooltip
+    #  renderers.push(tooltip)
     @set('ttmodels', ttmodels)
     @get('plot').set('renderers', renderers)
     return
