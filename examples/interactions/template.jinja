@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>{{ title }}</title>
+        <link href="styles.css" type="text/css" rel="stylesheet" />
+    </head>
+    <body>
+        {{ plot_div|indent(8) }}
+        <br />
+        <br />
+        {% for file in bokeh_js_files %}
+        <script type="text/javascript" src="{{ file }}">
+        </script>
+        {% endfor %}
+        {{ plot_script|indent(8) }}
+    </body>
+</html>

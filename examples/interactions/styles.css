@@ -1,0 +1,21 @@
+/*
+ *
+ * MAIN BOKEH SETUP
+ *
+ */ 
+.bk-plot-wrapper table tr td, 
+table, td, tr {
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.bk-canvas {
+  clear: both;
+  position: absolute;
+}
+
+.bk-canvas-wrapper {
+  position: relative;
+  float: left;
+}
