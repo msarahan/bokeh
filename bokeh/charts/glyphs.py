@@ -252,17 +252,34 @@ class AreaGlyph(LineGlyph):
         # concat the list of indexed y values into dataframe
         df = pd.concat(areas, axis=1)
 
-        # calculate stacked values along the rows
-        stacked_df = df.cumsum(axis=1)
+        # split the dataframe up into the negative and positive parts.  If negative and positive parts
+        #    are both in the same column, this is wrong, and a per-row approach is needed.
+        # get rightmost column that has negative numbers in it
+        right_negative = df[df<0].any().nonzero()[0][-1]
+        # get leftmost positive value that has numbers larger than 0
+        left_positive = df[df>0].any().nonzero()[0][0]
+
+        # cumulative sum flips columns around so that summation goes opposite direction to positive space
+        negative_sum = df[df.columns[:right_negative+1][::-1]].cumsum(axis=1)
+        # flip around to original order
+        negative_sum = negative_sum[negative_sum.columns[::-1]]
+        # normal cumsum for the positive columns
+        positive_sum = df[df.columns[left_positive-1:]].cumsum(axis=1)
 
         # lower bounds of each area series are diff between stacked and orig values
-        lower_bounds = stacked_df - df
+        negative_lower_bounds = negative_sum
+        negative_upper_bounds = negative_sum - df[negative_sum.columns]
+        positive_lower_bounds = positive_sum - df[positive_sum.columns]
+        positive_upper_bounds = positive_sum
 
+
+        lower_bounds = negative_lower_bounds.join(positive_lower_bounds)
         # reverse the df so the patch is drawn in correct order
         lower_bounds = lower_bounds.iloc[::-1]
+        upper_bounds = negative_upper_bounds.join(positive_upper_bounds)
 
         # concat the upper and lower bounds together
-        stacked_df = pd.concat([stacked_df, lower_bounds])
+        stacked_df = pd.concat([upper_bounds, lower_bounds])
 
         # update the data in the glyphs
         for i, glyph in enumerate(glyphs):
